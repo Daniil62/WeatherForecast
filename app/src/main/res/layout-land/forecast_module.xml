@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="2dp"
+    android:background="@drawable/layout_style">
+
+    <TextView
+        android:id="@+id/forecast_module_header_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginLeft="5dp"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <ImageView
+        android:id="@+id/forecast_module_imageView"
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_margin="5dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/forecast_module_header_textView"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/forecast_module_night_temp_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:textColor="@color/white"
+        android:background="@drawable/night_temp_background"
+        app:layout_constraintStart_toEndOf="@+id/forecast_module_imageView"
+        app:layout_constraintTop_toTopOf="@+id/forecast_module_imageView" />
+
+    <TextView
+        android:id="@+id/forecast_module_day_temp_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="7dp"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/forecast_module_imageView"
+        app:layout_constraintTop_toBottomOf="@+id/forecast_module_night_temp_textView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ACDC">
+
+    <TextView
+        android:id="@+id/date_detailed_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:textSize="25sp"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/detailed_recycler"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:paddingStart="5dp"
+            android:paddingLeft="5dp"
+            android:orientation="vertical"
+            tools:ignore="RtlSymmetry">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/picture_detailed_imageView"
+                    android:layout_width="65dp"
+                    android:layout_height="65dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/min_temperature_detailed_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:paddingLeft="4dp"
+                        android:paddingRight="4dp"
+                        android:textSize="19.5sp"
+                        android:textColor="@color/white"
+                        android:background="@drawable/night_temp_background"/>
+
+                    <TextView
+                        android:id="@+id/max_temperature_detailed_textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="5dp"
+                        android:textSize="19.5sp" />
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/description_detailed_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="20dp"
+                    android:textSize="15sp"
+                    android:textStyle="italic"/>
+
+            </LinearLayout>
+            <TextView
+            android:id="@+id/wind_speed_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/wind_speed"
+            android:textSize="19.5sp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                tools:ignore="UseCompoundDrawables">
+
+                <TextView
+                    android:id="@+id/wind_degree_detailed_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/wind_degree"
+                    android:textSize="19.5sp"/>
+
+                <ImageView
+                    android:id="@+id/detailed_wind_picture"
+                    android:layout_width="25dp"
+                    android:layout_height="25dp"
+                    android:layout_margin="5dp"
+                    tools:ignore="ContentDescription" />
+
+            </LinearLayout>
+
+        <TextView
+            android:id="@+id/atmospheric_pressure_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/pressure"
+            android:textSize="19.5sp"/>
+
+        <TextView
+            android:id="@+id/humidity_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/humidity"
+            android:textSize="19.5sp"/>
+
+        <TextView
+            android:id="@+id/clouds_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/clouds"
+            android:textSize="19.5sp"/>
+
+        <TextView
+            android:id="@+id/probably_of_precipitation_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/probably_of_precipitation"
+            android:textSize="19.5sp"/>
+
+        <TextView
+            android:id="@+id/dew_point_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/dew_point"
+            android:textSize="19.5sp"/>
+
+        <TextView
+            android:id="@+id/ultraviolet_index_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/ultraviolet_index"
+            android:textSize="19.5sp"/>
+
+        <TextView
+            android:id="@+id/sunrise_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/sunrise"
+            android:textSize="19.5sp"/>
+
+        <TextView
+            android:id="@+id/sunset_detailed_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:text="@string/sunset"
+            android:textSize="19.5sp"/>
+
+            <TextView
+                android:id="@+id/moonrise_detailed_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/moonrise"
+                android:textSize="19.5sp"/>
+
+            <TextView
+                android:id="@+id/moonset_detailed_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/moonset"
+                android:textSize="19.5sp"/>
+
+            <TextView
+                android:id="@+id/moon_phase_detailed_textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/moon_phase"
+                android:textSize="19.5sp"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
