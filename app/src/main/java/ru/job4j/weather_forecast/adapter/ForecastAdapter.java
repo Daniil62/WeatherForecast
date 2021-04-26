@@ -59,7 +59,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             @SuppressLint("SimpleDateFormat")
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTS"));
-            date.setText(simpleDateFormat.format(new Date(daily.getDt() * 1000 + 10800000)));
+            date.setText(simpleDateFormat.format(new Date(daily.getDt() * 1000)));
             String PATH = "http://openweathermap.org/img/wn/";
             ImageLoader.setIcon(image, PATH + daily.getWeather().getIcon() + "@2x.png");
             nightTemp.setText(String.valueOf(daily.getTemp().getNight()));

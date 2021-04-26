@@ -100,8 +100,8 @@ public class DetailedFragment extends Fragment {
                     + daily.getWeather().getIcon() + "@2x.png");
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTS"));
-            int PLUS_THREE_HOURS = 10800000;
-            date.setText(simpleDateFormat.format(new Date(daily.getDt() * 1000 + PLUS_THREE_HOURS)));
+        //    int PLUS_THREE_HOURS = 10800000;
+            date.setText(simpleDateFormat.format(new Date(daily.getDt() * 1000)));
             minTemp.setText(daily.getTemp().getNight() + " °C");
             maxTemp.setText(daily.getTemp().getMax() + " °C");
             description.setText(daily.getWeather().getDescription());
@@ -121,13 +121,13 @@ public class DetailedFragment extends Fragment {
             ultravioletInd.setText(getResources().getString(R.string.ultraviolet_index) + " " + daily.getUvi());
             simpleDateFormat = new SimpleDateFormat("HH:mm");
             sunrise.setText(getResources().getString(R.string.sunrise) + " "
-                    + simpleDateFormat.format(new Date(daily.getSunrise() * 1000 + PLUS_THREE_HOURS)));
+                    + simpleDateFormat.format(new Date(daily.getSunrise() * 1000)));
             sunset.setText(getResources().getString(R.string.sunset) + " "
-                    + simpleDateFormat.format(new Date(daily.getSunset() * 1000 + PLUS_THREE_HOURS)));
+                    + simpleDateFormat.format(new Date(daily.getSunset() * 1000)));
             moonrise.setText(getResources().getString(R.string.moonrise) + " "
-                    + simpleDateFormat.format(new Date(daily.getMoonrise() * 1000 + PLUS_THREE_HOURS)));
+                    + simpleDateFormat.format(new Date(daily.getMoonrise() * 1000)));
             moonset.setText(getResources().getString(R.string.moonset) + " "
-                    + simpleDateFormat.format(new Date(daily.getMoonset() * 1000 + PLUS_THREE_HOURS)));
+                    + simpleDateFormat.format(new Date(daily.getMoonset() * 1000)));
             moonPhase.setText(getString(R.string.moon_phase) + " " + daily.getMoonPhase());
         }
     }

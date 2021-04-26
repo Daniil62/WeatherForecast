@@ -75,7 +75,7 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
         ImageLoader.setIcon(picture, context.getString(R.string.path_for_download_icon)
                 + hourly.getWeather().get(0).getIcon() + "@2x.png");
         SimpleDateFormat sdf = new SimpleDateFormat("dd / HH:mm");
-        time.setText(sdf.format(new Date(hourly.getDt() * 1000 + 10800000)));
+        time.setText(sdf.format(new Date(hourly.getDt() * 1000)));
         temperature.setText(hourly.getTemp() + " °C");
         visibility.setText(hourly.getVisibility() + " " + context.getString(R.string.meter));
         windSpeed.setText(hourly.getWindSpeed() + " " + context.getString(R.string.meter_sec));

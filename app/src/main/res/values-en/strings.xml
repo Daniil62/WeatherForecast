@@ -40,4 +40,5 @@
     <string name="every_three_hours">Every three hours.</string>
     <string name="every_five_hours">Every five hours.</string>
     <string name="once_a_day">Once a day.</string>
+    <string name="to_exit_toast">Click again to exit.</string>
 </resources>

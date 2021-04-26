@@ -1,19 +1,19 @@
 package ru.job4j.weather_forecast.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.PendingIntent;
+//import android.app.AlarmManager;
+//import android.app.AlertDialog;
+//import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
+//import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
+//import android.widget.ImageView;
+//import android.widget.RadioGroup;
 import android.widget.TextView;
 import java.util.Objects;
 import androidx.annotation.NonNull;
@@ -34,14 +34,14 @@ import ru.job4j.weather_forecast.adapter.ForecastAdapter;
 import ru.job4j.weather_forecast.api.JsonWeatherApi;
 import ru.job4j.weather_forecast.data_base.DbHelper;
 import ru.job4j.weather_forecast.model.Item;
-import ru.job4j.weather_forecast.service.ForecastPullService;
+//import ru.job4j.weather_forecast.service.ForecastPullService;
 
 public class ForecastFragment extends Fragment {
     private static DbHelper helper;
     private static RecyclerView recycler;
     private static String lang;
-    private ImageView settings;
-    private int period;
+//    private ImageView settings;
+//    private int period;
     @SuppressLint("StaticFieldLeak")
     private static TextView header;
     private static double latitude;
@@ -71,56 +71,58 @@ public class ForecastFragment extends Fragment {
         helper = new DbHelper(getContext());
         lang = getString(R.string.lang);
         findViews(view);
-        settings.setOnClickListener(v -> showSettingsDialog());
+//        settings.setOnClickListener(v -> showSettingsDialog());
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         update();
         return view;
     }
     private void findViews(View view) {
         recycler = view.findViewById(R.id.forecast_recycler);
-        settings = view.findViewById(R.id.forecast_settings_imageView);
+//        settings = view.findViewById(R.id.forecast_settings_imageView);
         header = view.findViewById(R.id.forecast_header_textView);
     }
     public void update() {
-        Intent intent = new Intent(getActivity(), ForecastPullService.class);
-        AlarmManager alarmManager = (AlarmManager) getActivity()
-                .getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getService(getContext(),
-                0, intent, 0);
-        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-                SystemClock.elapsedRealtime(), period, pendingIntent);
-        ForecastPullService.enqueueWork(getContext(), intent);
+        ForecastLoader loader = new ForecastLoader();
+        loader.loadForecast();
+//        Intent intent = new Intent(getActivity(), ForecastPullService.class);
+//        AlarmManager alarmManager = (AlarmManager) getActivity()
+//                .getSystemService(Context.ALARM_SERVICE);
+//        PendingIntent pendingIntent = PendingIntent.getService(getContext(),
+//                0, intent, 0);
+//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+//                SystemClock.elapsedRealtime(), period, pendingIntent);
+//        ForecastPullService.enqueueWork(getContext(), intent);
     }
-    private void showSettingsDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        @SuppressLint("InflateParams") View view = LayoutInflater.from(getContext())
-                .inflate(R.layout.settings_dialog, null);
-        builder.setView(view);
-        builder.setPositiveButton("Ok", (dialog, which) -> {
-            RadioGroup variants = ((AlertDialog) dialog).findViewById(R.id.settings_radioGroup);
-            int result = 0;
-            switch (variants.getCheckedRadioButtonId()) {
-                case (R.id.radioButton1): {
-                    result = 3600000;
-                    break;
-                }
-                case (R.id.radioButton2): {
-                    result = 10800000;
-                    break;
-                }
-                case (R.id.radioButton3): {
-                    result = 18000000;
-                    break;
-                }
-                case (R.id.radioButton4): {
-                    result = 86400000;
-                    break;
-                }
-            }
-            period = result;
-        });
-        builder.show();
-    }
+//    private void showSettingsDialog() {
+//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+//        @SuppressLint("InflateParams") View view = LayoutInflater.from(getContext())
+//                .inflate(R.layout.settings_dialog, null);
+//        builder.setView(view);
+//        builder.setPositiveButton("Ok", (dialog, which) -> {
+//            RadioGroup variants = ((AlertDialog) dialog).findViewById(R.id.settings_radioGroup);
+//            int result = 0;
+//            switch (variants.getCheckedRadioButtonId()) {
+//                case (R.id.radioButton1): {
+//                    result = 3600000;
+//                    break;
+//                }
+//                case (R.id.radioButton2): {
+//                    result = 10800000;
+//                    break;
+//                }
+//                case (R.id.radioButton3): {
+//                    result = 18000000;
+//                    break;
+//                }
+//                case (R.id.radioButton4): {
+//                    result = 86400000;
+//                    break;
+//                }
+//            }
+//            period = result;
+//        });
+//        builder.show();
+//    }
     public static class ForecastLoader {
         private final String PATH = "https://api.openweathermap.org/data/2.5/";
         private final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();

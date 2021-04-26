@@ -39,4 +39,5 @@
     <string name="every_three_hours">Раз в три часа.</string>
     <string name="every_five_hours">Раз в пять часов.</string>
     <string name="once_a_day">Раз в сутки.</string>
+    <string name="to_exit_toast">Для выхода, нажмите повторно.</string>
 </resources>
