@@ -41,4 +41,11 @@
     <string name="every_five_hours">Every five hours.</string>
     <string name="once_a_day">Once a day.</string>
     <string name="to_exit_toast">Click again to exit.</string>
+    <string name="mon">Mo</string>
+    <string name="tue">Tu</string>
+    <string name="wed">We</string>
+    <string name="thu">Th</string>
+    <string name="fri">Fr</string>
+    <string name="sat">Sa</string>
+    <string name="sun">Su</string>
 </resources>

@@ -3,7 +3,6 @@ package ru.job4j.weather_forecast.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -13,11 +12,13 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.job4j.weather_forecast.R;
+import ru.job4j.weather_forecast.databinding.HourlyRecyclerModuleBinding;
 import ru.job4j.weather_forecast.model.Hourly;
 import ru.job4j.weather_forecast.tools.ImageLoader;
 import ru.job4j.weather_forecast.tools.WindConverter;
 
 public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.DetailedHolder>{
+    private HourlyRecyclerModuleBinding binding;
     private final Context context;
     private ImageView picture;
     private TextView time;
@@ -37,12 +38,12 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
     @NonNull
     @Override
     public DetailedHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new DetailedHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.hourly_recycler_module, parent, false));
+        return new DetailedHolder(HourlyRecyclerModuleBinding.inflate(
+                LayoutInflater.from(parent.getContext()), parent, false));
     }
     @Override
     public void onBindViewHolder(@NonNull DetailedHolder holder, int position) {
-        findViews(holder.itemView);
+        findViews();
         setViews(list.get(position));
     }
     @Override
@@ -57,17 +58,17 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
     public long getItemId(int position) {
         return position;
     }
-    private void findViews(View view) {
-        picture = view.findViewById(R.id.picture_detailed_hourly_imageView);
-        time = view.findViewById(R.id.time_detailed_hourly_textView);
-        windSpeed = view.findViewById(R.id.hourly_wind_speed_detailed_textView);
-        windDirection = view.findViewById(R.id.hourly_wind_direction_detailed_textView);
-        windPicture = view.findViewById(R.id.hourly_wind_picture);
-        temperature = view.findViewById(R.id.hourly_temp_detailed_textView);
-        visibility = view.findViewById(R.id.hourly_visibility_detailed_textView);
-        clouds = view.findViewById(R.id.hourly_cloud_detailed_textView);
-        pressure = view.findViewById(R.id.hourly_pressure_detailed_textView);
-        pop = view.findViewById(R.id.hourly_pop_detailed_textView);
+    private void findViews() {
+        picture = binding.pictureDetailedHourlyImageView;
+        time = binding.timeDetailedHourlyTextView;
+        windSpeed = binding.hourlyWindSpeedDetailedTextView;
+        windDirection = binding.hourlyWindDirectionDetailedTextView;
+        windPicture = binding.hourlyWindPicture;
+        temperature = binding.hourlyTempDetailedTextView;
+        visibility = binding.hourlyVisibilityDetailedTextView;
+        clouds = binding.hourlyCloudDetailedTextView;
+        pressure = binding.hourlyPressureDetailedTextView;
+        pop = binding.hourlyPopDetailedTextView;
     }
     @SuppressLint({"SetTextI18n", "SimpleDateFormat", "DefaultLocale"})
     private void setViews(Hourly hourly) {
@@ -86,9 +87,10 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
                 + " " + context.getString(R.string.mm_Hg));
         pop.setText(String.format("%.0f", hourly.getPop() * 100) + " %");
     }
-    public static class DetailedHolder extends RecyclerView.ViewHolder {
-        public DetailedHolder(@NonNull View itemView) {
-            super(itemView);
+    public class DetailedHolder extends RecyclerView.ViewHolder {
+        public DetailedHolder(@NonNull HourlyRecyclerModuleBinding itemView) {
+            super(itemView.getRoot());
+            binding = itemView;
         }
     }
 }

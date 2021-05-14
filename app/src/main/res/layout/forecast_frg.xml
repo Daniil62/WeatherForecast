@@ -13,13 +13,6 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
-        <!--ImageView
-            android:id="@+id/forecast_settings_imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_manage"
-            tools:ignore="ContentDescription" /-->
-
         <TextView
             android:id="@+id/forecast_header_textView"
             android:layout_width="wrap_content"

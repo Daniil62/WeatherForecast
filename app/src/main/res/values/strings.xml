@@ -40,4 +40,11 @@
     <string name="every_five_hours">Раз в пять часов.</string>
     <string name="once_a_day">Раз в сутки.</string>
     <string name="to_exit_toast">Для выхода, нажмите повторно.</string>
+    <string name="mon">Пн</string>
+    <string name="tue">Вт</string>
+    <string name="wed">Ср</string>
+    <string name="thu">Чт</string>
+    <string name="fri">Пт</string>
+    <string name="sat">Сб</string>
+    <string name="sun">Вс</string>
 </resources>

@@ -1,11 +1,12 @@
 package ru.job4j.weather_forecast.activity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.MotionEvent;
 import android.widget.Toast;
-
 import org.osmdroid.api.IGeoPoint;
 import org.osmdroid.config.Configuration;
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory;
@@ -20,15 +21,26 @@ import ru.job4j.weather_forecast.R;
 import ru.job4j.weather_forecast.activator.ForecastActivator;
 
 public class MapActivity extends AppCompatActivity {
-    private MapView map;
-    private boolean tumbler = true;
+    private SharedPreferences preferences;
+    private SharedPreferences.Editor editor;
     private static long backPressed;
+    private MapView map;
+    private IGeoPoint center;
+    private double zoomLevel;
+    private final String LAT = "lat";
+    private final String LON = "lon";
+    private final String ZOOM = "zoom";
+    @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.map_fragment);
+        preferences = getSharedPreferences("map_preferences", MODE_PRIVATE);
+        editor = preferences.edit();
         setConfiguration();
         setMap();
+        center = restoreCoordinates();
+        zoomLevel = restoreZoomLevel();
         setController(map);
     }
     @Override
@@ -42,34 +54,12 @@ public class MapActivity extends AppCompatActivity {
         backPressed = System.currentTimeMillis();
     }
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
-        int actionType = ev.getAction();
-        switch (actionType) {
-            case (MotionEvent.ACTION_MOVE) : {
-                tumbler = false;
-                break;
-            }
-            case (MotionEvent.ACTION_UP) : {
-                if (tumbler) {
-                    startForecast(ev);
-                }
-                break;
-            }
-        }
-        return false;
-    }
-    @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        int actionType = ev.getAction();
-        switch (actionType) {
-            case (MotionEvent.ACTION_MOVE) : {
-                tumbler = false;
-                break;
+        if (ev.getAction() == MotionEvent.ACTION_UP) {
+            if (center.equals(map.getMapCenter())) {
+                startForecast(ev);
             }
-            case (MotionEvent.ACTION_UP) : {
-                tumbler = true;
-                break;
-            }
+            center = map.getMapCenter();
         }
         return super.dispatchTouchEvent(ev);
     }
@@ -77,8 +67,8 @@ public class MapActivity extends AppCompatActivity {
         Projection projection = map.getProjection();
         IGeoPoint point = projection.fromPixels((int) ev.getX(), (int) ev.getY());
         Intent intent = new Intent(this, ForecastActivator.class);
-        intent.putExtra("lat", point.getLatitude());
-        intent.putExtra("lon", point.getLongitude());
+        intent.putExtra(LAT, point.getLatitude());
+        intent.putExtra(LON, point.getLongitude());
         startActivity(intent);
     }
     private void setConfiguration() {
@@ -89,14 +79,40 @@ public class MapActivity extends AppCompatActivity {
     private void setMap() {
         map = findViewById(R.id.map);
         map.setMultiTouchControls(true);
+        map.setMaxZoomLevel(17.0);
+        map.setMinZoomLevel(2.0);
         map.setTileSource(TileSourceFactory.MAPNIK);
     }
     private void setController(MapView map) {
         if (map != null) {
-            GeoPoint geoPoint = new GeoPoint(54.5, 39.5);
             MapController controller = (MapController) map.getController();
-            controller.setCenter(geoPoint);
-            controller.setZoom(6);
+            controller.setCenter(center);
+            controller.setZoom(zoomLevel);
         }
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        saveCoordinates();
+        saveZoomLevel();
+    }
+    private void saveCoordinates() {
+        editor.putLong(LAT, Double.doubleToLongBits(center.getLatitude()));
+        editor.putLong(LON, Double.doubleToLongBits(center.getLongitude()));
+        editor.apply();
+    }
+    private GeoPoint restoreCoordinates() {
+        return new GeoPoint(
+                Double.longBitsToDouble(
+                        preferences.getLong(LAT, Double.doubleToLongBits(54.5))),
+                Double.longBitsToDouble(
+                        preferences.getLong(LON, Double.doubleToLongBits(39.5))));
+    }
+    private void saveZoomLevel() {
+        editor.putLong(ZOOM, Double.doubleToLongBits(map.getZoomLevelDouble())).apply();
+    }
+    private double restoreZoomLevel() {
+        return Double.longBitsToDouble(
+                preferences.getLong(ZOOM, Double.doubleToLongBits(6.0)));
     }
 }

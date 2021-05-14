@@ -1,19 +1,13 @@
 package ru.job4j.weather_forecast.fragment;
 
 import android.annotation.SuppressLint;
-//import android.app.AlarmManager;
-//import android.app.AlertDialog;
-//import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-//import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-//import android.widget.ImageView;
-//import android.widget.RadioGroup;
 import android.widget.TextView;
 import java.util.Objects;
 import androidx.annotation.NonNull;
@@ -33,19 +27,18 @@ import ru.job4j.weather_forecast.R;
 import ru.job4j.weather_forecast.adapter.ForecastAdapter;
 import ru.job4j.weather_forecast.api.JsonWeatherApi;
 import ru.job4j.weather_forecast.data_base.DbHelper;
+import ru.job4j.weather_forecast.databinding.ForecastFrgBinding;
 import ru.job4j.weather_forecast.model.Item;
-//import ru.job4j.weather_forecast.service.ForecastPullService;
 
 public class ForecastFragment extends Fragment {
-    private static DbHelper helper;
-    private static RecyclerView recycler;
-    private static String lang;
-//    private ImageView settings;
-//    private int period;
-    @SuppressLint("StaticFieldLeak")
-    private static TextView header;
-    private static double latitude;
-    private static double longitude;
+    private ForecastFrgBinding binding;
+    private DbHelper helper;
+    private RecyclerView recycler;
+    private String lang;
+    private Context context;
+    private TextView header;
+    private double latitude;
+    private double longitude;
     public interface ForecastSelect {
         void selected(int index);
     }
@@ -64,66 +57,27 @@ public class ForecastFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.forecast_frg, container, false);
+        binding = ForecastFrgBinding.inflate(getLayoutInflater());
         Intent intent = Objects.requireNonNull(getActivity()).getIntent();
         latitude = intent.getDoubleExtra("lat", 54.5);
         longitude = intent.getDoubleExtra("lon", 39.5);
-        helper = new DbHelper(getContext());
+        context = getContext();
+        helper = new DbHelper(context);
         lang = getString(R.string.lang);
-        findViews(view);
-//        settings.setOnClickListener(v -> showSettingsDialog());
+        findViews();
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         update();
-        return view;
+        return binding.getRoot();
     }
-    private void findViews(View view) {
-        recycler = view.findViewById(R.id.forecast_recycler);
-//        settings = view.findViewById(R.id.forecast_settings_imageView);
-        header = view.findViewById(R.id.forecast_header_textView);
+    private void findViews() {
+        recycler = binding.forecastRecycler;
+        header = binding.forecastHeaderTextView;
     }
     public void update() {
         ForecastLoader loader = new ForecastLoader();
         loader.loadForecast();
-//        Intent intent = new Intent(getActivity(), ForecastPullService.class);
-//        AlarmManager alarmManager = (AlarmManager) getActivity()
-//                .getSystemService(Context.ALARM_SERVICE);
-//        PendingIntent pendingIntent = PendingIntent.getService(getContext(),
-//                0, intent, 0);
-//        alarmManager.setInexactRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
-//                SystemClock.elapsedRealtime(), period, pendingIntent);
-//        ForecastPullService.enqueueWork(getContext(), intent);
     }
-//    private void showSettingsDialog() {
-//        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//        @SuppressLint("InflateParams") View view = LayoutInflater.from(getContext())
-//                .inflate(R.layout.settings_dialog, null);
-//        builder.setView(view);
-//        builder.setPositiveButton("Ok", (dialog, which) -> {
-//            RadioGroup variants = ((AlertDialog) dialog).findViewById(R.id.settings_radioGroup);
-//            int result = 0;
-//            switch (variants.getCheckedRadioButtonId()) {
-//                case (R.id.radioButton1): {
-//                    result = 3600000;
-//                    break;
-//                }
-//                case (R.id.radioButton2): {
-//                    result = 10800000;
-//                    break;
-//                }
-//                case (R.id.radioButton3): {
-//                    result = 18000000;
-//                    break;
-//                }
-//                case (R.id.radioButton4): {
-//                    result = 86400000;
-//                    break;
-//                }
-//            }
-//            period = result;
-//        });
-//        builder.show();
-//    }
-    public static class ForecastLoader {
+    public class ForecastLoader {
         private final String PATH = "https://api.openweathermap.org/data/2.5/";
         private final HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         private final OkHttpClient.Builder client = new OkHttpClient.Builder()
@@ -135,11 +89,9 @@ public class ForecastFragment extends Fragment {
                 .build();
         private final JsonWeatherApi weatherApi = retrofit.create(JsonWeatherApi.class);
         private void levelSelector(HttpLoggingInterceptor interceptor) {
-            if (BuildConfig.DEBUG) {
-                interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-            } else {
-                interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-            }
+            interceptor.setLevel(BuildConfig.DEBUG ?
+                    HttpLoggingInterceptor.Level.BODY :
+                    HttpLoggingInterceptor.Level.BASIC);
         }
         public void loadForecast() {
             levelSelector(interceptor);
@@ -152,15 +104,21 @@ public class ForecastFragment extends Fragment {
                     if (response.body() != null) {
                         Item item = response.body();
                         helper.addItem(item);
-                        recycler.setAdapter(new ForecastAdapter(select, helper.getDailyList()));
+                        setAdapter();
                         header.setText(item.getLat() + ", " + item.getLon());
                     }
                 }
+                @SuppressLint("ShowToast")
                 @Override
                 public void onFailure(@NonNull Call<Item> call, @NonNull Throwable t) {
                     Log.d("TAG", "<<< " + t.getMessage() + " >>>");
+                    setAdapter();
                 }
             });
+        }
+        private void setAdapter() {
+            recycler.setAdapter(new ForecastAdapter(
+                    context, select, helper.getDailyList()));
         }
     }
 }

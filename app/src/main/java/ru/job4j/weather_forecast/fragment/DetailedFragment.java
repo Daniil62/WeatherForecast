@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 import androidx.annotation.NonNull;
@@ -20,11 +21,14 @@ import ru.job4j.weather_forecast.R;
 import ru.job4j.weather_forecast.activity.DetailedActivity;
 import ru.job4j.weather_forecast.adapter.DetailedAdapter;
 import ru.job4j.weather_forecast.data_base.DbHelper;
+import ru.job4j.weather_forecast.databinding.DetailedFrgBinding;
 import ru.job4j.weather_forecast.model.Daily;
 import ru.job4j.weather_forecast.tools.ImageLoader;
+import ru.job4j.weather_forecast.tools.WeekDayConverter;
 import ru.job4j.weather_forecast.tools.WindConverter;
 
 public class DetailedFragment extends Fragment {
+    private DetailedFrgBinding binding;
     private static Daily daily;
     private TextView date;
     private RecyclerView recycler;
@@ -59,8 +63,8 @@ public class DetailedFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.detailed_frg, container, false);
-        findViews(view);
+        binding = DetailedFrgBinding.inflate(getLayoutInflater());
+        findViews();
         Context context = getContext();
         DbHelper helper = new DbHelper(context);
         daily = helper.getDaily(index);
@@ -68,29 +72,29 @@ public class DetailedFragment extends Fragment {
                 LinearLayoutManager.HORIZONTAL, false));
         recycler.setAdapter(new DetailedAdapter(context, helper.getHourlyList()));
         setTexts();
-        return view;
+        return binding.getRoot();
     }
-    private void findViews(View view) {
-        date = view.findViewById(R.id.date_detailed_textView);
-        recycler = view.findViewById(R.id.detailed_recycler);
-        picture = view.findViewById(R.id.picture_detailed_imageView);
-        minTemp = view.findViewById(R.id.min_temperature_detailed_textView);
-        maxTemp = view.findViewById(R.id.max_temperature_detailed_textView);
-        description = view.findViewById(R.id.description_detailed_textView);
-        windSpeed = view.findViewById(R.id.wind_speed_detailed_textView);
-        windDegree = view.findViewById(R.id.wind_degree_detailed_textView);
-        windPicture = view.findViewById(R.id.detailed_wind_picture);
-        pressure = view.findViewById(R.id.atmospheric_pressure_detailed_textView);
-        humidity = view.findViewById(R.id.humidity_detailed_textView);
-        clouds = view.findViewById(R.id.clouds_detailed_textView);
-        probOfPrecipitation = view.findViewById(R.id.probably_of_precipitation_detailed_textView);
-        dewPoint = view.findViewById(R.id.dew_point_detailed_textView);
-        ultravioletInd = view.findViewById(R.id.ultraviolet_index_detailed_textView);
-        sunrise = view.findViewById(R.id.sunrise_detailed_textView);
-        sunset = view.findViewById(R.id.sunset_detailed_textView);
-        moonrise = view.findViewById(R.id.moonrise_detailed_textView);
-        moonset = view.findViewById(R.id.moonset_detailed_textView);
-        moonPhase = view.findViewById(R.id.moon_phase_detailed_textView);
+    private void findViews() {
+        date = binding.dateDetailedTextView;
+        recycler = binding.detailedRecycler;
+        picture = binding.pictureDetailedImageView;
+        minTemp = binding.minTemperatureDetailedTextView;
+        maxTemp = binding.maxTemperatureDetailedTextView;
+        description = binding.descriptionDetailedTextView;
+        windSpeed = binding.windSpeedDetailedTextView;
+        windDegree = binding.windDegreeDetailedTextView;
+        windPicture = binding.detailedWindPicture;
+        pressure = binding.atmosphericPressureDetailedTextView;
+        humidity = binding.humidityDetailedTextView;
+        clouds = binding.cloudsDetailedTextView;
+        probOfPrecipitation = binding.probablyOfPrecipitationDetailedTextView;
+        dewPoint = binding.dewPointDetailedTextView;
+        ultravioletInd = binding.ultravioletIndexDetailedTextView;
+        sunrise = binding.sunriseDetailedTextView;
+        sunset = binding.sunsetDetailedTextView;
+        moonrise = binding.moonriseDetailedTextView;
+        moonset = binding.moonsetDetailedTextView;
+        moonPhase = binding.moonPhaseDetailedTextView;
     }
     @SuppressLint({"SetTextI18n", "SimpleDateFormat", "DefaultLocale"})
     private void setTexts() {
@@ -98,10 +102,9 @@ public class DetailedFragment extends Fragment {
             int windId = WindConverter.getDirection(daily.getWindDeg());
             ImageLoader.setIcon(picture, getString(R.string.path_for_download_icon)
                     + daily.getWeather().getIcon() + "@2x.png");
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTS"));
-        //    int PLUS_THREE_HOURS = 10800000;
-            date.setText(simpleDateFormat.format(new Date(daily.getDt() * 1000)));
+            date.setText(getDateWithWeekDay(daily.getDt() * 1000));
             minTemp.setText(daily.getTemp().getNight() + " °C");
             maxTemp.setText(daily.getTemp().getMax() + " °C");
             description.setText(daily.getWeather().getDescription());
@@ -130,5 +133,15 @@ public class DetailedFragment extends Fragment {
                     + simpleDateFormat.format(new Date(daily.getMoonset() * 1000)));
             moonPhase.setText(getString(R.string.moon_phase) + " " + daily.getMoonPhase());
         }
+    }
+    @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
+    private String getDateWithWeekDay(long timeValue) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTS"));
+        Calendar calendar = Calendar.getInstance();
+        Date dt = new Date(timeValue);
+        calendar.setTime(dt);
+        return simpleDateFormat.format(dt) + ", "
+                + getString(WeekDayConverter.getDay(calendar.get(Calendar.DAY_OF_WEEK)));
     }
 }
