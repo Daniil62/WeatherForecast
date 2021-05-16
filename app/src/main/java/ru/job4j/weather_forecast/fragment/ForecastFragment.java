@@ -26,13 +26,14 @@ import ru.job4j.weather_forecast.BuildConfig;
 import ru.job4j.weather_forecast.R;
 import ru.job4j.weather_forecast.adapter.ForecastAdapter;
 import ru.job4j.weather_forecast.api.JsonWeatherApi;
-import ru.job4j.weather_forecast.data_base.DbHelper;
+import ru.job4j.weather_forecast.data_base.DbApp;
+import ru.job4j.weather_forecast.data_base.ForecastDataBase;
 import ru.job4j.weather_forecast.databinding.ForecastFrgBinding;
 import ru.job4j.weather_forecast.model.Item;
 
 public class ForecastFragment extends Fragment {
+    private ForecastDataBase dataBase;
     private ForecastFrgBinding binding;
-    private DbHelper helper;
     private RecyclerView recycler;
     private String lang;
     private Context context;
@@ -62,12 +63,15 @@ public class ForecastFragment extends Fragment {
         latitude = intent.getDoubleExtra("lat", 54.5);
         longitude = intent.getDoubleExtra("lon", 39.5);
         context = getContext();
-        helper = new DbHelper(context);
+        setDatabase();
         lang = getString(R.string.lang);
         findViews();
         recycler.setLayoutManager(new LinearLayoutManager(getContext()));
         update();
         return binding.getRoot();
+    }
+    private void setDatabase() {
+        dataBase = DbApp.getDatabase();
     }
     private void findViews() {
         recycler = binding.forecastRecycler;
@@ -103,8 +107,11 @@ public class ForecastFragment extends Fragment {
                 public void onResponse(@NonNull Call<Item> call, @NonNull Response<Item> response) {
                     if (response.body() != null) {
                         Item item = response.body();
-                        helper.addItem(item);
-                        setAdapter();
+                        Thread thread = new Thread(() -> {
+                            loadToDb(item);
+                            recycler.post(ForecastLoader.this::setAdapter);
+                        });
+                        thread.start();
                         header.setText(item.getLat() + ", " + item.getLon());
                     }
                 }
@@ -116,9 +123,19 @@ public class ForecastFragment extends Fragment {
                 }
             });
         }
+        private void loadToDb(Item item) {
+            if (item != null) {
+                dataBase.itemDao().deleteAll();
+                dataBase.dailyDao().deleteAll();
+                dataBase.hourlyDao().deleteAll();
+                dataBase.itemDao().addItem(item);
+                dataBase.dailyDao().addDailyList(item.getDaily());
+                dataBase.hourlyDao().addHourlyList(item.getHourly());
+            }
+        }
         private void setAdapter() {
             recycler.setAdapter(new ForecastAdapter(
-                    context, select, helper.getDailyList()));
+                    context, select, dataBase.dailyDao().getDailyList()));
         }
     }
 }

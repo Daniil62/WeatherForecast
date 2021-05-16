@@ -3,10 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="ru.job4j.weather_forecast">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <application
+        android:name=".data_base.DbApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,10 +16,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherForecast"
         tools:replace="android:allowBackup">
-
-        <service android:name=".service.ForecastPullService"
-            android:permission="android.permission.BIND_JOB_SERVICE"
-            tools:node="replace"/>
 
         <activity android:name=".activity.MapActivity">
             <intent-filter>
@@ -27,7 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activator.ForecastActivator" />
-        <activity android:name=".activator.DetailedActivator" />
+        <activity android:name=".activator.DetailedActivator"/>
     </application>
 
 </manifest>

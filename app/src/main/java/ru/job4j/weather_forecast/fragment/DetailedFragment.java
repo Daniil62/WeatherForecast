@@ -2,6 +2,7 @@ package ru.job4j.weather_forecast.fragment;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,13 +15,15 @@ import java.util.Date;
 import java.util.TimeZone;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.job4j.weather_forecast.R;
 import ru.job4j.weather_forecast.activity.DetailedActivity;
 import ru.job4j.weather_forecast.adapter.DetailedAdapter;
-import ru.job4j.weather_forecast.data_base.DbHelper;
+import ru.job4j.weather_forecast.data_base.DbApp;
+import ru.job4j.weather_forecast.data_base.ForecastDataBase;
 import ru.job4j.weather_forecast.databinding.DetailedFrgBinding;
 import ru.job4j.weather_forecast.model.Daily;
 import ru.job4j.weather_forecast.tools.ImageLoader;
@@ -29,6 +32,7 @@ import ru.job4j.weather_forecast.tools.WindConverter;
 
 public class DetailedFragment extends Fragment {
     private DetailedFrgBinding binding;
+    private ForecastDataBase dataBase;
     private static Daily daily;
     private TextView date;
     private RecyclerView recycler;
@@ -59,6 +63,7 @@ public class DetailedFragment extends Fragment {
         fragment.setArguments(bundle);
         return fragment;
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -66,13 +71,17 @@ public class DetailedFragment extends Fragment {
         binding = DetailedFrgBinding.inflate(getLayoutInflater());
         findViews();
         Context context = getContext();
-        DbHelper helper = new DbHelper(context);
-        daily = helper.getDaily(index);
+      //  DbHelper helper = new DbHelper(context);
+        setDataBase();
+        daily = dataBase.dailyDao().getDaily(index);
         recycler.setLayoutManager(new LinearLayoutManager(context,
                 LinearLayoutManager.HORIZONTAL, false));
-        recycler.setAdapter(new DetailedAdapter(context, helper.getHourlyList()));
+        recycler.setAdapter(new DetailedAdapter(context, dataBase.hourlyDao().getHourlyList()));
         setTexts();
         return binding.getRoot();
+    }
+    private void setDataBase() {
+        dataBase = DbApp.getDatabase();
     }
     private void findViews() {
         date = binding.dateDetailedTextView;
@@ -96,18 +105,19 @@ public class DetailedFragment extends Fragment {
         moonset = binding.moonsetDetailedTextView;
         moonPhase = binding.moonPhaseDetailedTextView;
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"SetTextI18n", "SimpleDateFormat", "DefaultLocale"})
     private void setTexts() {
         if (daily != null) {
             int windId = WindConverter.getDirection(daily.getWindDeg());
             ImageLoader.setIcon(picture, getString(R.string.path_for_download_icon)
-                    + daily.getWeather().getIcon() + "@2x.png");
+                    + daily.getWeather().get(0).getIcon() + "@2x.png");
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM");
             simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTS"));
             date.setText(getDateWithWeekDay(daily.getDt() * 1000));
             minTemp.setText(daily.getTemp().getNight() + " °C");
             maxTemp.setText(daily.getTemp().getMax() + " °C");
-            description.setText(daily.getWeather().getDescription());
+            description.setText(daily.getWeather().get(0).getDescription());
             windSpeed.setText(getResources().getString(R.string.wind_speed) + " " + daily.getWindSpeed()
                     + " " + getResources().getString(R.string.meter_sec));
             windDegree.setText(getResources().getString(R.string.wind_degree) + " "

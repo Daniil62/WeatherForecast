@@ -2,41 +2,47 @@ package ru.job4j.weather_forecast.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.Collections;
 import java.util.List;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import ru.job4j.weather_forecast.tools.FieldConverter;
 
+@Entity(tableName = "hourly_tab")
 public class Hourly {
+    @PrimaryKey(autoGenerate = true)
+    private int id;
     @SerializedName("dt")
     @Expose
-    private final long dt;
+    private long dt;
     @SerializedName("temp")
     @Expose
-    private final double temp;
+    private double temp;
     @SerializedName("pressure")
     @Expose
-    private final int pressure;
+    private int pressure;
     @SerializedName("clouds")
     @Expose
-    private final int clouds;
+    private int clouds;
     @SerializedName("visibility")
     @Expose
-    private final int visibility;
+    private int visibility;
     @SerializedName("wind_speed")
     @Expose
-    private final double windSpeed;
+    private double windSpeed;
     @SerializedName("wind_deg")
     @Expose
-    private final double windDeg;
+    private double windDeg;
     @SerializedName("weather")
     @Expose
-    private final List<HourlyWeather> weather;
+    @TypeConverters(FieldConverter.class)
+    private List<HourlyWeather> weather;
     @SerializedName("pop")
     @Expose
-    private final double pop;
-    public Hourly(long dt, double temp, int pressure, int clouds, int visibility, double windSpeed,
-                  int windDeg, HourlyWeather weather, double pop) {
-        super();
+    private double pop;
+    public Hourly(int id, long dt, double temp, int pressure, int clouds, int visibility,
+                  double windSpeed, double windDeg, List<HourlyWeather> weather, double pop) {
+        this.id = id;
         this.dt = dt;
         this.temp = temp;
         this.pressure = pressure;
@@ -44,8 +50,13 @@ public class Hourly {
         this.visibility = visibility;
         this.windSpeed = windSpeed;
         this.windDeg = windDeg;
-        this.weather = Collections.singletonList(weather);
+        this.weather = weather;
         this.pop = pop;
+    }
+
+    // getters
+    public int getId() {
+        return id;
     }
     public long getDt() {
         return dt;
@@ -73,6 +84,38 @@ public class Hourly {
     }
     public double getPop() {
         return pop;
+    }
+
+    //setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setDt(long dt) {
+        this.dt = dt;
+    }
+    public void setTemp(double temp) {
+        this.temp = temp;
+    }
+    public void setPressure(int pressure) {
+        this.pressure = pressure;
+    }
+    public void setClouds(int clouds) {
+        this.clouds = clouds;
+    }
+    public void setVisibility(int visibility) {
+        this.visibility = visibility;
+    }
+    public void setWindSpeed(double windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+    public void setWindDeg(double windDeg) {
+        this.windDeg = windDeg;
+    }
+    public void setWeather(List<HourlyWeather> weather) {
+        this.weather = weather;
+    }
+    public void setPop(double pop) {
+        this.pop = pop;
     }
     @Override
     public String toString() {

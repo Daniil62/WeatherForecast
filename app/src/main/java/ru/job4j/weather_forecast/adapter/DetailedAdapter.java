@@ -2,6 +2,7 @@ package ru.job4j.weather_forecast.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,6 +11,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.RecyclerView;
 import ru.job4j.weather_forecast.R;
 import ru.job4j.weather_forecast.databinding.HourlyRecyclerModuleBinding;
@@ -41,6 +43,7 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
         return new DetailedHolder(HourlyRecyclerModuleBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false));
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull DetailedHolder holder, int position) {
         findViews();
@@ -70,6 +73,7 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
         pressure = binding.hourlyPressureDetailedTextView;
         pop = binding.hourlyPopDetailedTextView;
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"SetTextI18n", "SimpleDateFormat", "DefaultLocale"})
     private void setViews(Hourly hourly) {
         int windId = WindConverter.getDirection(hourly.getWindDeg());

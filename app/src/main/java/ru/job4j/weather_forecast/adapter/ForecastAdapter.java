@@ -38,6 +38,7 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
         return new ForecastHolder(ForecastModuleBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false));
     }
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull ForecastHolder holder, int position) {
         Daily daily = list.get(position);
@@ -59,16 +60,16 @@ public class ForecastAdapter extends RecyclerView.Adapter<ForecastAdapter.Foreca
             findViews();
         }
         private void findViews() {
-            date = binding.forecastModuleHeaderTextView;//view.findViewById(R.id.forecast_module_header_textView);
-            image = binding.forecastModuleImageView;//view.findViewById(R.id.forecast_module_imageView);
-            nightTemp = binding.forecastModuleNightTempTextView;//view.findViewById(R.id.forecast_module_night_temp_textView);
-            dayTemp = binding.forecastModuleDayTempTextView;//view.findViewById(R.id.forecast_module_day_temp_textView);
+            date = binding.forecastModuleHeaderTextView;
+            image = binding.forecastModuleImageView;
+            nightTemp = binding.forecastModuleNightTempTextView;
+            dayTemp = binding.forecastModuleDayTempTextView;
         }
         @RequiresApi(api = Build.VERSION_CODES.N)
         private void bind(Daily daily) {
             date.setText(getDateWithWeekDay(daily.getDt() * 1000));
             String PATH = "http://openweathermap.org/img/wn/";
-            ImageLoader.setIcon(image, PATH + daily.getWeather().getIcon() + "@2x.png");
+            ImageLoader.setIcon(image, PATH + daily.getWeather().get(0).getIcon() + "@2x.png");
             nightTemp.setText(String.valueOf(daily.getTemp().getNight()));
             dayTemp.setText(String.valueOf(daily.getTemp().getMax()));
         }

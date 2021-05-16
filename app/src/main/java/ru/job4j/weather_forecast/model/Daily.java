@@ -2,10 +2,16 @@ package ru.job4j.weather_forecast.model;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import java.util.Collections;
 import java.util.List;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
+import ru.job4j.weather_forecast.data_base.Constants;
+import ru.job4j.weather_forecast.tools.FieldConverter;
 
+@Entity(tableName = Constants.DAILY_TAB)
 public class Daily {
+    @PrimaryKey(autoGenerate = true)
     private int id;
     @SerializedName("dt")
     @Expose
@@ -27,6 +33,7 @@ public class Daily {
     private double moonPhase;
     @SerializedName("temp")
     @Expose
+    @TypeConverters(FieldConverter.class)
     private Temp temp;
     @SerializedName("pressure")
     @Expose
@@ -45,6 +52,7 @@ public class Daily {
     private int windDeg;
     @SerializedName("weather")
     @Expose
+    @TypeConverters(FieldConverter.class)
     private List<DailyWeather> weather;
     @SerializedName("clouds")
     @Expose
@@ -57,10 +65,10 @@ public class Daily {
     private double uvi;
     public Daily() {
     }
-    public Daily(long dt, long sunrise, long sunset, long moonrise, long moonset, double moonPhase,
+    public Daily(int id, long dt, long sunrise, long sunset, long moonrise, long moonset, double moonPhase,
                  Temp temp, int pressure, int humidity, double dewPoint, double windSpeed,
-                 int windDeg, DailyWeather weather, int clouds, double pop, double uvi) {
-        super();
+                 int windDeg, List<DailyWeather> weather, int clouds, double pop, double uvi) {
+        this.id = id;
         this.dt = dt;
         this.sunrise = sunrise;
         this.sunset = sunset;
@@ -73,16 +81,15 @@ public class Daily {
         this.dewPoint = dewPoint;
         this.windSpeed = windSpeed;
         this.windDeg = windDeg;
-        this.weather = Collections.singletonList(weather);
+        this.weather = weather;
         this.clouds = clouds;
         this.pop = pop;
         this.uvi = uvi;
     }
+
+    // getters
     public int getId() {
         return id;
-    }
-    public void setId(int id) {
-        this.id = id;
     }
     public long getDt() {
         return dt;
@@ -120,8 +127,11 @@ public class Daily {
     public int getWindDeg() {
         return windDeg;
     }
-    public DailyWeather getWeather() {
-        return weather.get(0);
+    public List<DailyWeather> getDailyWeather() {
+        return weather;
+    }
+    public List<DailyWeather> getWeather() {
+        return weather;
     }
     public int getClouds() {
         return clouds;
@@ -131,6 +141,59 @@ public class Daily {
     }
     public double getUvi() {
         return uvi;
+    }
+
+    //setters
+    public void setId(int id) {
+        this.id = id;
+    }
+    public void setDt(long dt) {
+        this.dt = dt;
+    }
+    public void setSunrise(long sunrise) {
+        this.sunrise = sunrise;
+    }
+    public void setSunset(long sunset) {
+        this.sunset = sunset;
+    }
+    public void setMoonrise(long moonrise) {
+        this.moonrise = moonrise;
+    }
+    public void setMoonset(long moonset) {
+        this.moonset = moonset;
+    }
+    public void setMoonPhase(double moonPhase) {
+        this.moonPhase = moonPhase;
+    }
+    public void setTemp(Temp temp) {
+        this.temp = temp;
+    }
+    public void setPressure(int pressure) {
+        this.pressure = pressure;
+    }
+    public void setHumidity(int humidity) {
+        this.humidity = humidity;
+    }
+    public void setDewPoint(double dewPoint) {
+        this.dewPoint = dewPoint;
+    }
+    public void setWindSpeed(double windSpeed) {
+        this.windSpeed = windSpeed;
+    }
+    public void setWindDeg(int windDeg) {
+        this.windDeg = windDeg;
+    }
+    public void setWeather(List<DailyWeather> weather) {
+        this.weather = weather;
+    }
+    public void setClouds(int clouds) {
+        this.clouds = clouds;
+    }
+    public void setPop(double pop) {
+        this.pop = pop;
+    }
+    public void setUvi(double uvi) {
+        this.uvi = uvi;
     }
     @Override
     public String toString() {
