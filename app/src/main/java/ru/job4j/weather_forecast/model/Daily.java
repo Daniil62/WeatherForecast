@@ -11,6 +11,7 @@ import ru.job4j.weather_forecast.tools.FieldConverter;
 
 @Entity(tableName = Constants.DAILY_TAB)
 public class Daily {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     @SerializedName("dt")
@@ -63,8 +64,7 @@ public class Daily {
     @SerializedName("uvi")
     @Expose
     private double uvi;
-    public Daily() {
-    }
+
     public Daily(int id, long dt, long sunrise, long sunset, long moonrise, long moonset, double moonPhase,
                  Temp temp, int pressure, int humidity, double dewPoint, double windSpeed,
                  int windDeg, List<DailyWeather> weather, int clouds, double pop, double uvi) {
@@ -195,6 +195,7 @@ public class Daily {
     public void setUvi(double uvi) {
         this.uvi = uvi;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

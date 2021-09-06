@@ -19,8 +19,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import ru.job4j.weather_forecast.BuildConfig;
 import ru.job4j.weather_forecast.R;
 import ru.job4j.weather_forecast.activator.ForecastActivator;
+import ru.job4j.weather_forecast.tools.ForecastRepository;
 
 public class MapActivity extends AppCompatActivity {
+
     private SharedPreferences preferences;
     private SharedPreferences.Editor editor;
     private static long backPressed;
@@ -30,6 +32,8 @@ public class MapActivity extends AppCompatActivity {
     private final String LAT = "lat";
     private final String LON = "lon";
     private final String ZOOM = "zoom";
+    private ForecastRepository repository;
+
     @SuppressLint("CommitPrefEdits")
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,8 +45,10 @@ public class MapActivity extends AppCompatActivity {
         setMap();
         center = restoreCoordinates();
         zoomLevel = restoreZoomLevel();
+        repository = ForecastRepository.getInstance();
         setController(map);
     }
+
     @Override
     public void onBackPressed() {
         if (backPressed + 2000 > System.currentTimeMillis()) {
@@ -53,6 +59,7 @@ public class MapActivity extends AppCompatActivity {
         }
         backPressed = System.currentTimeMillis();
     }
+
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_UP) {
@@ -63,19 +70,22 @@ public class MapActivity extends AppCompatActivity {
         }
         return super.dispatchTouchEvent(ev);
     }
+
     private void startForecast(MotionEvent ev) {
         Projection projection = map.getProjection();
         IGeoPoint point = projection.fromPixels((int) ev.getX(), (int) ev.getY());
         Intent intent = new Intent(this, ForecastActivator.class);
-        intent.putExtra(LAT, point.getLatitude());
-        intent.putExtra(LON, point.getLongitude());
+        repository.getForecast(getString(R.string.lang),
+                point.getLatitude(), point.getLongitude(), getString(R.string.key));
         startActivity(intent);
     }
+
     private void setConfiguration() {
         Configuration.getInstance().load(this,
                 PreferenceManager.getDefaultSharedPreferences(this));
         Configuration.getInstance().setUserAgentValue(BuildConfig.APPLICATION_ID);
     }
+
     private void setMap() {
         map = findViewById(R.id.map);
         map.setMultiTouchControls(true);
@@ -83,6 +93,7 @@ public class MapActivity extends AppCompatActivity {
         map.setMinZoomLevel(2.0);
         map.setTileSource(TileSourceFactory.MAPNIK);
     }
+
     private void setController(MapView map) {
         if (map != null) {
             MapController controller = (MapController) map.getController();
@@ -90,17 +101,20 @@ public class MapActivity extends AppCompatActivity {
             controller.setZoom(zoomLevel);
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         saveCoordinates();
         saveZoomLevel();
     }
+
     private void saveCoordinates() {
         editor.putLong(LAT, Double.doubleToLongBits(center.getLatitude()));
         editor.putLong(LON, Double.doubleToLongBits(center.getLongitude()));
         editor.apply();
     }
+
     private GeoPoint restoreCoordinates() {
         return new GeoPoint(
                 Double.longBitsToDouble(
@@ -108,9 +122,11 @@ public class MapActivity extends AppCompatActivity {
                 Double.longBitsToDouble(
                         preferences.getLong(LON, Double.doubleToLongBits(39.5))));
     }
+
     private void saveZoomLevel() {
         editor.putLong(ZOOM, Double.doubleToLongBits(map.getZoomLevelDouble())).apply();
     }
+
     private double restoreZoomLevel() {
         return Double.longBitsToDouble(
                 preferences.getLong(ZOOM, Double.doubleToLongBits(6.0)));

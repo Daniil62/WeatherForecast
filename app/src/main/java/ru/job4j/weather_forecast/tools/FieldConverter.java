@@ -13,12 +13,14 @@ import ru.job4j.weather_forecast.model.HourlyWeather;
 import ru.job4j.weather_forecast.model.Temp;
 
 public class FieldConverter {
+
     private static final Gson gson = new Gson();
     @TypeConverter
     public static List<Daily> dailyListConvert(String word) {
         Type dailyListType = new TypeToken<List<Daily>>() {}.getType();
         return word == null ? Collections.emptyList() : gson.fromJson(word, dailyListType);
     }
+
     @TypeConverter
     public static String dailyStringConvert(List<Daily> list) {
         return gson.toJson(list);
@@ -29,6 +31,7 @@ public class FieldConverter {
         Type hourlyListType = new TypeToken<List<Hourly>>() {}.getType();
         return word == null ? Collections.emptyList() : gson.fromJson(word, hourlyListType);
     }
+
     @TypeConverter
     public static String hourlyStringConvert(List<Hourly> list) {
         return gson.toJson(list);
@@ -39,6 +42,7 @@ public class FieldConverter {
         Type tempType = new TypeToken<Temp>() {}.getType();
         return word == null ? null : gson.fromJson(word, tempType);
     }
+
     @TypeConverter
     public static String tempStringConvert(Temp temp) {
         return gson.toJson(temp);
@@ -49,6 +53,7 @@ public class FieldConverter {
         Type dailyWeatherListType = new TypeToken<List<DailyWeather>>() {}.getType();
         return word == null ? Collections.emptyList() : gson.fromJson(word, dailyWeatherListType);
     }
+
     @TypeConverter
     public static String dailyWeatherStringConvert(List<DailyWeather> list) {
         return gson.toJson(list);
@@ -59,6 +64,7 @@ public class FieldConverter {
         Type hourlyWeatherListType = new TypeToken<List<HourlyWeather>>() {}.getType();
         return word == null ? Collections.emptyList() : gson.fromJson(word, hourlyWeatherListType);
     }
+
     @TypeConverter
     public static String hourlyWeatherStringConvert(List<HourlyWeather> list) {
         return gson.toJson(list);

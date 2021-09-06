@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Temp {
+
 //    @SerializedName("day")
 //    @Expose
 //    private double day;
@@ -22,11 +23,13 @@ public class Temp {
 //    @SerializedName("morn")
 //    @Expose
 //    private double morn;
+
     public Temp(double max, double night) {
         super();
         this.max = max;
         this.night = night;
     }
+
 //    public Temp(double day, double min, double max, double night, double eve, double morn) {
 //        super();
 //        this.day = day;
@@ -54,6 +57,7 @@ public class Temp {
  //   public double getMorn() {
  //       return morn;
  //   }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

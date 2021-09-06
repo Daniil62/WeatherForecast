@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Weather Forecast:</string>
+    <string name="key">**********************</string>
     <string name="lang">en</string>
     <string name="path_for_download_icon">http://openweathermap.org/img/wn/</string>
     <string name="wind_speed">Wind speed:</string>

@@ -8,8 +8,10 @@ import androidx.fragment.app.FragmentManager;
 import ru.job4j.weather_forecast.R;
 
 public abstract class DetailedActivity extends FragmentActivity {
+
     public static final String DETAILED_FOR = "detailed_for";
     public abstract Fragment loadFrg();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

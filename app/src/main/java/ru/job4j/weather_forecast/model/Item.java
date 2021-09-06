@@ -11,6 +11,7 @@ import ru.job4j.weather_forecast.tools.FieldConverter;
 
 @Entity(tableName = "item_tab")
 public class Item {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     @SerializedName("lat")
@@ -33,6 +34,7 @@ public class Item {
     @Expose
     @TypeConverters(FieldConverter.class)
     private List<Daily> daily;
+
     public Item(double lat, double lon, String timezone, int timezoneOffset, List<Hourly> hourly,
                 List<Daily> daily) {
         super();
@@ -89,6 +91,7 @@ public class Item {
     public void setDaily(List<Daily> daily) {
         this.daily = daily;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

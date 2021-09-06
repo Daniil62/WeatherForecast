@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class HourlyWeather {
+
     @SerializedName("id")
     @Expose
     private int id;
@@ -14,6 +15,7 @@ public class HourlyWeather {
         super();
         this.icon = icon;
     }
+
     public int getId() {
         return id;
     }
@@ -23,6 +25,7 @@ public class HourlyWeather {
     public String getIcon() {
         return icon;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

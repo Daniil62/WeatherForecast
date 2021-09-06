@@ -5,6 +5,7 @@ import java.util.Map;
 import ru.job4j.weather_forecast.R;
 
 public class WindConverter {
+
     private static final Map<Integer, Integer> arrowsStore = new HashMap<>();
     static {
         arrowsStore.put(R.string.n, R.drawable.n_arrow);
@@ -16,6 +17,7 @@ public class WindConverter {
         arrowsStore.put(R.string.w, R.drawable.w_arrow);
         arrowsStore.put(R.string.nw, R.drawable.nw_arrow);
     }
+
     public static int getDirection(double degree) {
         int result = 0;
         if (degree >= 0 && degree < 22.5 || degree >= 337.5 && degree <= 360) {
@@ -37,6 +39,7 @@ public class WindConverter {
         }
         return result;
     }
+
     public static int getArrow(int key) {
         return arrowsStore.get(key);
     }

@@ -10,10 +10,12 @@ import ru.job4j.weather_forecast.fragment.DetailedFragment;
 import ru.job4j.weather_forecast.fragment.ForecastFragment;
 
 public class ForecastActivator extends MainActivity implements ForecastFragment.ForecastSelect{
+
     @Override
     public Fragment loadFrg() {
         return new ForecastFragment();
     }
+
     @Override
     public void selected(int index) {
         if (findViewById(R.id.detailed) == null) {

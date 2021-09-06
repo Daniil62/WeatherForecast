@@ -10,6 +10,7 @@ import ru.job4j.weather_forecast.tools.FieldConverter;
 
 @Entity(tableName = "hourly_tab")
 public class Hourly {
+
     @PrimaryKey(autoGenerate = true)
     private int id;
     @SerializedName("dt")
@@ -40,6 +41,7 @@ public class Hourly {
     @SerializedName("pop")
     @Expose
     private double pop;
+
     public Hourly(int id, long dt, double temp, int pressure, int clouds, int visibility,
                   double windSpeed, double windDeg, List<HourlyWeather> weather, double pop) {
         this.id = id;
@@ -117,6 +119,7 @@ public class Hourly {
     public void setPop(double pop) {
         this.pop = pop;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

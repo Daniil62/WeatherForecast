@@ -31,6 +31,7 @@ import ru.job4j.weather_forecast.tools.WeekDayConverter;
 import ru.job4j.weather_forecast.tools.WindConverter;
 
 public class DetailedFragment extends Fragment {
+
     private DetailedFrgBinding binding;
     private ForecastDataBase dataBase;
     private static Daily daily;
@@ -55,6 +56,7 @@ public class DetailedFragment extends Fragment {
     private TextView moonset;
     private TextView moonPhase;
     private static int index;
+
     public static DetailedFragment of(int value) {
         DetailedFragment fragment = new DetailedFragment();
         Bundle bundle = new Bundle();
@@ -63,6 +65,7 @@ public class DetailedFragment extends Fragment {
         fragment.setArguments(bundle);
         return fragment;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
@@ -71,18 +74,19 @@ public class DetailedFragment extends Fragment {
         binding = DetailedFrgBinding.inflate(getLayoutInflater());
         findViews();
         Context context = getContext();
-      //  DbHelper helper = new DbHelper(context);
         setDataBase();
-        daily = dataBase.dailyDao().getDaily(index);
+        daily = dataBase.itemDao().getItem().getDaily().get(index);
         recycler.setLayoutManager(new LinearLayoutManager(context,
                 LinearLayoutManager.HORIZONTAL, false));
-        recycler.setAdapter(new DetailedAdapter(context, dataBase.hourlyDao().getHourlyList()));
+        recycler.setAdapter(new DetailedAdapter(context, dataBase.itemDao().getItem().getHourly()));
         setTexts();
         return binding.getRoot();
     }
+
     private void setDataBase() {
         dataBase = DbApp.getDatabase();
     }
+
     private void findViews() {
         date = binding.dateDetailedTextView;
         recycler = binding.detailedRecycler;
@@ -105,6 +109,7 @@ public class DetailedFragment extends Fragment {
         moonset = binding.moonsetDetailedTextView;
         moonPhase = binding.moonPhaseDetailedTextView;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"SetTextI18n", "SimpleDateFormat", "DefaultLocale"})
     private void setTexts() {
@@ -144,6 +149,7 @@ public class DetailedFragment extends Fragment {
             moonPhase.setText(getString(R.string.moon_phase) + " " + daily.getMoonPhase());
         }
     }
+
     @SuppressLint({"SetTextI18n", "SimpleDateFormat"})
     private String getDateWithWeekDay(long timeValue) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM");

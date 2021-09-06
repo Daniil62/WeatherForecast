@@ -11,7 +11,8 @@ import ru.job4j.weather_forecast.model.Item;
 
 @Database(entities = {Item.class, Daily.class, Hourly.class}, version = 1, exportSchema = false)
 public abstract class ForecastDataBase extends RoomDatabase {
+
     public abstract ItemDao itemDao();
-    public abstract DailyDao dailyDao();
-    public abstract HourlyDao hourlyDao();
+//    public abstract DailyDao dailyDao();
+//    public abstract HourlyDao hourlyDao();
 }

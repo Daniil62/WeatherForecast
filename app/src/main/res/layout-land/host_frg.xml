@@ -7,17 +7,18 @@
     android:id="@+id/content_root">
 
     <FrameLayout
+        android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_weight="1.5"
-        android:id="@+id/content">
+        android:layout_weight="1.5">
     </FrameLayout>
 
     <FrameLayout
+        android:id="@+id/detailed"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="3"
-        android:id="@+id/detailed">
+        android:background="#ACDC">
     </FrameLayout>
 
 </LinearLayout>

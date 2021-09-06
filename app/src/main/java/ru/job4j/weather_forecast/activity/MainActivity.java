@@ -7,7 +7,9 @@ import ru.job4j.weather_forecast.R;
 import android.os.Bundle;
 
 public abstract class MainActivity extends FragmentActivity {
+
     public abstract Fragment loadFrg();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -4,6 +4,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class DailyWeather {
+
     @SerializedName("id")
     @Expose
     private int id;
@@ -13,11 +14,13 @@ public class DailyWeather {
     @SerializedName("icon")
     @Expose
     private final String icon;
+
     public DailyWeather(String description, String icon) {
         super();
         this.description = description;
         this.icon = icon;
     }
+
     public int getId() {
         return id;
     }
@@ -30,6 +33,7 @@ public class DailyWeather {
     public String getIcon() {
         return icon;
     }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();

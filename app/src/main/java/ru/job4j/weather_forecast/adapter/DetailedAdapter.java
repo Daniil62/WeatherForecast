@@ -20,6 +20,7 @@ import ru.job4j.weather_forecast.tools.ImageLoader;
 import ru.job4j.weather_forecast.tools.WindConverter;
 
 public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.DetailedHolder>{
+
     private HourlyRecyclerModuleBinding binding;
     private final Context context;
     private ImageView picture;
@@ -33,34 +34,41 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
     private TextView clouds;
     private TextView pop;
     private final List<Hourly> list;
+
     public DetailedAdapter(Context context, List<Hourly> list) {
         this.context = context;
         this.list = list;
     }
+
     @NonNull
     @Override
     public DetailedHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new DetailedHolder(HourlyRecyclerModuleBinding.inflate(
                 LayoutInflater.from(parent.getContext()), parent, false));
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull DetailedHolder holder, int position) {
         findViews();
         setViews(list.get(position));
     }
+
     @Override
     public int getItemCount() {
         return list.size();
     }
+
     @Override
     public int getItemViewType(int position) {
         return position;
     }
+
     @Override
     public long getItemId(int position) {
         return position;
     }
+
     private void findViews() {
         picture = binding.pictureDetailedHourlyImageView;
         time = binding.timeDetailedHourlyTextView;
@@ -73,6 +81,7 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
         pressure = binding.hourlyPressureDetailedTextView;
         pop = binding.hourlyPopDetailedTextView;
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @SuppressLint({"SetTextI18n", "SimpleDateFormat", "DefaultLocale"})
     private void setViews(Hourly hourly) {
@@ -91,6 +100,7 @@ public class DetailedAdapter extends RecyclerView.Adapter<DetailedAdapter.Detail
                 + " " + context.getString(R.string.mm_Hg));
         pop.setText(String.format("%.0f", hourly.getPop() * 100) + " %");
     }
+
     public class DetailedHolder extends RecyclerView.ViewHolder {
         public DetailedHolder(@NonNull HourlyRecyclerModuleBinding itemView) {
             super(itemView.getRoot());

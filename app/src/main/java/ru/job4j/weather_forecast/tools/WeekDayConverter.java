@@ -5,6 +5,7 @@ import java.util.Map;
 import ru.job4j.weather_forecast.R;
 
 public class WeekDayConverter {
+
     private static final Map<Integer, Integer> WEEK_DAY_STORE = new HashMap<>();
     static {
         WEEK_DAY_STORE.put(1, R.string.sun);
@@ -15,6 +16,7 @@ public class WeekDayConverter {
         WEEK_DAY_STORE.put(6, R.string.fri);
         WEEK_DAY_STORE.put(7, R.string.sat);
     }
+
     public static int getDay(int key) {
         return WEEK_DAY_STORE.get(key);
     }

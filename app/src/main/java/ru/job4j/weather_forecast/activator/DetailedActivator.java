@@ -5,6 +5,7 @@ import ru.job4j.weather_forecast.activity.DetailedActivity;
 import ru.job4j.weather_forecast.fragment.DetailedFragment;
 
 public class DetailedActivator extends DetailedActivity {
+
     @Override
     public Fragment loadFrg() {
         return DetailedFragment.of(getIntent()
