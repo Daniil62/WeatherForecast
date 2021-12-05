@@ -127,9 +127,6 @@ public class Daily {
     public int getWindDeg() {
         return windDeg;
     }
-    public List<DailyWeather> getDailyWeather() {
-        return weather;
-    }
     public List<DailyWeather> getWeather() {
         return weather;
     }

@@ -6,9 +6,10 @@ import java.util.List;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 import androidx.room.TypeConverters;
+import ru.job4j.weather_forecast.data_base.Constants;
 import ru.job4j.weather_forecast.tools.FieldConverter;
 
-@Entity(tableName = "hourly_tab")
+@Entity(tableName = Constants.HOURLY_TAB)
 public class Hourly {
 
     @PrimaryKey(autoGenerate = true)
